@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace Game
 {
-    public class GameplayInitialization
+    public class InitBallGamplay
     {
-        private List<IBall> _balls;
+        private List<IBall> _balls = new List<IBall>();
 
-        public GameplayInitialization(List<IBall> balls)
-        { 
-            _balls = balls;
+        public InitBallGamplay(int winTypeAmnt, int noWinTypeAmnt, IBall ball, int extraPickAmnt = 0)
+        {
+            Initialize(winTypeAmnt, noWinTypeAmnt, ball, extraPickAmnt);
         }
 
-        public void Initialize(int winTypeAmnt, int noWinTypeAmnt, IBall ball, int extraPickAmnt = 0)
+        private void Initialize(int winTypeAmnt, int noWinTypeAmnt, IBall ball, int extraPickAmnt = 0)
         {
             for(int i = 0; i < winTypeAmnt; i++)
             {
