@@ -9,5 +9,6 @@ namespace Game
     public interface IBall
     {
         BallType Type { get; set; }
+        IBall Clone(BallType type);
     }
 }
