@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Game
 {
-    public enum BallTypes
+    public enum BallType
     {
         Win = 1,
         ExraPick = 2,
@@ -15,6 +15,7 @@ namespace Game
 
     public class Ball
     {
-        public BallTypes Type { get; set; }
+        public BallType Type { get; set; }
+
     }
 }
