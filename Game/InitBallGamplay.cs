@@ -19,19 +19,19 @@ namespace Game
         {
             for(int i = 0; i < winTypeAmnt; i++)
             {
-                _balls.Add(AddBall(ball, BallType.Win));
+                _balls.Add(ball.Clone(BallType.Win));
             }
 
-            for(int i = 0;i < noWinTypeAmnt; i++)
+            for(int j = 0; j < noWinTypeAmnt; j++)
             {
-                _balls.Add(AddBall(ball, BallType.NoWin));
+                _balls.Add(ball.Clone(BallType.NoWin));
             }
 
-            if(extraPickAmnt > 0)
+            if (extraPickAmnt > 0)
             {
-                for( int i = 0; i<extraPickAmnt; i++)
+                for( int k = 0; k<extraPickAmnt; k++)
                 {
-                    _balls.Add(AddBall(ball, BallType.ExraPick));
+                    _balls.Add(ball.Clone(BallType.ExraPick));
                 }
             }
         }

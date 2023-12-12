@@ -16,5 +16,10 @@ namespace Game
     public class Ball : IBall
     {
         public BallType Type { get; set; }
+
+        public IBall Clone(BallType type)
+        {
+            return new Ball { Type = type };
+        }
     }
 }
