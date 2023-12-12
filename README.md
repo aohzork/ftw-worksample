@@ -1,5 +1,7 @@
 # ftw-worksample
-The focus of the test will be on accuracy of the requirements met, coding techniques and decisions made. Assessment will be made regarding how to structure, design and organise the code, readability and quality to determine the OOP skills and how to implement requirements. Also good with refactoring the code and have running tests to ensure everything works and the quality of code is high.
+The focus of the test will be on accuracy of the requirements met, coding techniques and decisions made.
+* Assessment will be made regarding how to structure, design and organise the code, readability and quality to determine the OOP skills and how to implement requirements.
+* Also good with refactoring the code and have running tests to ensure everything works and the quality of code is high.
 
 ## Instructions for the worksample
 The test is the following:
