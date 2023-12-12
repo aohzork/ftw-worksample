@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Game
 {
-    public class Gameplay
+    public class GameplayInitialization
     {
         private List<IBall> _balls;
 
-        public Gameplay(List<IBall> balls)
+        public GameplayInitialization(List<IBall> balls)
         { 
             _balls = balls;
         }
