@@ -13,9 +13,8 @@ namespace Game
         NoWin = 3,
     }
 
-    public class Ball
+    public class Ball : IBall
     {
         public BallType Type { get; set; }
-
     }
 }
