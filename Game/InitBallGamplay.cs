@@ -36,12 +36,6 @@ namespace Game
             }
         }
 
-        private IBall AddBall(IBall ball, BallType type)
-        {
-            ball.Type = type;
-            return ball;
-        }
-
         public List<IBall> GetBalls()
         {
             return _balls;
