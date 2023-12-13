@@ -42,8 +42,9 @@ and pick a ball then the picked ball is a ”win” ball update the balance
 
 ---
 ## Reflections
-A fun assignment, ideally with more time I would had liked to do larger refactorings, more tests,<br>
+A fun assignment, ideally with more time I would had liked to do larger refactorings, more tests,
 and worked more with IGame interface, so that it would serve as a base blueprint for future games.
+
 Or perhaps have an interface for different types of games and move current public void Simulate(....) which reside in IGame, to an own interface ISimulate.
 
 Yeah, there can be done alot more to further simplify the the code, but overall I like the structure where each game is responsible for it's own game-loop. And to be able from the outside
