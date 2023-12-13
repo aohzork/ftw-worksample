@@ -30,7 +30,7 @@
             }
         }
 
-        public List<IBall> GetBalls()
+        public List<IBall> SetBalls()
         {
             return _balls;
         }
