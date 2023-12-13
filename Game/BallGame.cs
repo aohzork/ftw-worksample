@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Game
 {
-    public class BallGame
+    public class BallGame : IGame
     {
         private const int CostOfNewRound = 10;
         private const int CreditsOnWin = 20;
@@ -86,7 +86,8 @@ namespace Game
         {
             Console.WriteLine($"Total credits won: {totalWonCredits}");
             Console.WriteLine($"Total credits lost: {totalLostCredits}");
-            Console.WriteLine($"Net amount lost/won {totalWonCredits-totalLostCredits}");
+            var netAmount = CalculateNetWinLoss(totalWonCredits,totalLostCredits);
+            Console.WriteLine($"Net amount lost/won {netAmount}");
             Console.WriteLine("");
 
             var RTP = _bILogger.CalculateRTP(totalWonCredits, totalLostCredits);
@@ -119,6 +120,22 @@ namespace Game
         {
             var index = rnd.Next(0, _balls.Count);
             return _balls[index];
+        }
+
+        public void Simulate(ref int winAmount, ref int looseAmount, Random rnd)
+        {
+            looseAmount += CostOfNewRound;
+            var result = NewRound(rnd);
+
+            while (result == 3)
+            {
+                result = NewRound(rnd);
+            }
+
+            if (result == 1)
+            {
+                winAmount += CreditsOnWin;
+            }
         }
     }
 }
