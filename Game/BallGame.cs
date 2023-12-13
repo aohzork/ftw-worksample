@@ -44,7 +44,7 @@ namespace Game
             }
         }
 
-        private int PlayRound(Player player, ref int lostCredits, Random rnd)
+        public int PlayRound(Player player, ref int lostCredits, Random rnd)
         {
             player.SubtractCredits(CostOfNewRound);
             lostCredits += CostOfNewRound;
@@ -52,7 +52,7 @@ namespace Game
             return NewRound(rnd);
         }
 
-        private string ResultFeedback(int result, Player player, ref int winAmount)
+        public string ResultFeedback(int result, Player player, ref int winAmount)
         {  
             switch (result)
             {
@@ -70,7 +70,7 @@ namespace Game
             return ValidateInput(Console.ReadLine());
         }
 
-        private string ValidateInput(string input)
+        public string ValidateInput(string input)
         {
 
             if (String.IsNullOrEmpty(input) || (input.ToLower() != "y" && input.ToLower() != "n"))
@@ -82,7 +82,7 @@ namespace Game
             return input;
         }
 
-        private void EndSession(int totalWonCredits, int totalLostCredits )
+        public void EndSession(int totalWonCredits, int totalLostCredits )
         {
             Console.WriteLine($"Total credits won: {totalWonCredits}");
             Console.WriteLine($"Total credits lost: {totalLostCredits}");
@@ -93,7 +93,12 @@ namespace Game
             Console.WriteLine($"RTP Value: {RTP}%");
         }
 
-        private int NewRound(Random rnd)
+        public int CalculateNetWinLoss(int totalWon, int totalLost)
+        {
+            return totalWon - totalLost;
+        }
+
+        public int NewRound(Random rnd)
         {
             var ball = PickBall(rnd);
 
@@ -110,7 +115,7 @@ namespace Game
             return 0;
         }
 
-        IBall PickBall(Random rnd)
+        public IBall PickBall(Random rnd)
         {
             var index = rnd.Next(0, _balls.Count);
             return _balls[index];
