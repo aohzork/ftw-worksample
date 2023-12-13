@@ -9,10 +9,11 @@ namespace Game
 {
     public class BallGame
     {
-        private const int _costOfNewRound = 10;
-        private const int _creditsOnWin = 20;
+        private const int CostOfNewRound = 10;
+        private const int CreditsOnWin = 20;
 
         private List<IBall> _balls;
+        private BILogger _bILogger = new BILogger();
         public BallGame(List<IBall> balls)
         {
             _balls = balls;
@@ -23,48 +24,42 @@ namespace Game
             int wonCredits = 0, lostCredits = 0;
             var rnd = new Random();
             var isPlaying = true;
-            var input = "";
 
-            while (isPlaying)
+            while (isPlaying && player.CanPlayRound(CostOfNewRound))
             {
-                if (player.CanPlayRound(_costOfNewRound))
+                var result = PlayRound(player, ref lostCredits, rnd);
+                while (result == 3)
                 {
-                    var result = PlayRound(player, lostCredits, rnd);
-                    while (result == 3)
-                    {
-                        Console.WriteLine("Congratulations! You won an extra pick!");
-                        result = NewRound(rnd);
-                    }
-
-                    input = ResultFeedback(result, player, wonCredits);
-
-                    if (input.ToLower() == "n")
-                    {
-                        EndSession(wonCredits, lostCredits);
-                        isPlaying = false;
-                    }
+                    Console.WriteLine("Congratulations! You won an extra pick!");
+                    result = NewRound(rnd);
                 }
 
-                input = "";
+                var input = ResultFeedback(result, player, ref wonCredits);
+
+                if (input.ToLower() == "n")
+                {
+                    EndSession(wonCredits, lostCredits);
+                    isPlaying = false;
+                };
             }
         }
 
-        private int PlayRound(Player player, int lostCredits, Random rnd)
+        private int PlayRound(Player player, ref int lostCredits, Random rnd)
         {
-            player.SubtractCredits(_costOfNewRound);
-            lostCredits += _costOfNewRound;
+            player.SubtractCredits(CostOfNewRound);
+            lostCredits += CostOfNewRound;
             Console.WriteLine("You pick a new ball. Let's see the result...");
             return NewRound(rnd);
         }
 
-        private string ResultFeedback(int result, Player player, int winAmount)
+        private string ResultFeedback(int result, Player player, ref int winAmount)
         {  
             switch (result)
             {
                 case 1:
                     Console.WriteLine("You Won the round!");
-                    player.AddCredits(_creditsOnWin);
-                    winAmount += _creditsOnWin;
+                    player.AddCredits(CreditsOnWin);
+                    winAmount += CreditsOnWin;
                     break;
                 case 2:
                     Console.WriteLine("Too bad. you Lost the round! But dont give up yet");
@@ -72,19 +67,30 @@ namespace Game
             }
 
             Console.Write("Would you like to play again? Y/N: ");
-            return Console.ReadLine();
+            return ValidateInput(Console.ReadLine());
         }
 
-        void EndSession(int totalWonCredits, int totalLostCredits )
+        private string ValidateInput(string input)
+        {
+
+            if (String.IsNullOrEmpty(input) || (input.ToLower() != "y" && input.ToLower() != "n"))
+            {
+                Console.WriteLine("Sorry, cannot recognize the input, please try again");
+                input = ValidateInput(Console.ReadLine());
+            }
+
+            return input;
+        }
+
+        private void EndSession(int totalWonCredits, int totalLostCredits )
         {
             Console.WriteLine($"Total credits won: {totalWonCredits}");
             Console.WriteLine($"Total credits lost: {totalLostCredits}");
             Console.WriteLine($"Net amount lost/won {totalWonCredits-totalLostCredits}");
             Console.WriteLine("");
 
-            var RTP = Math.Round(((double)totalWonCredits / totalLostCredits) * 100,2);
-
-            Console.WriteLine($"RTP Value: {RTP}");
+            var RTP = _bILogger.CalculateRTP(totalWonCredits, totalLostCredits);
+            Console.WriteLine($"RTP Value: {RTP}%");
         }
 
         private int NewRound(Random rnd)
