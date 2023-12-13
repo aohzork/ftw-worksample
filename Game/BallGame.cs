@@ -20,55 +20,55 @@ namespace Game
 
         public void NewSession(Player player)
         {
-            var wonCredits = 0;
-            var lostCredits = 0;
-            var canExtraPick = false;
-            string input = "";
-            var canPlay = player.CanPlayRound(_costOfNewRound);
+            int wonCredits = 0, lostCredits = 0;
+            var rnd = new Random();
+            var isPlaying = true;
+            var input = "";
 
-            while (canPlay)
+            while (isPlaying)
             {
-                var result = 0;
-
-                if (canExtraPick)
+                if (player.CanPlayRound(_costOfNewRound))
                 {
-                    result = NewRound();
-                    canExtraPick = false;
-                }
-                else if (canPlay)
-                {
-                    player.SubtractCredits(_costOfNewRound);
-                    lostCredits += _costOfNewRound;
-                    result = NewRound();
+                    var result = PlayRound(player, lostCredits, rnd);
+                    while (result == 3)
+                    {
+                        Console.WriteLine("Congratulations! You won an extra pick!");
+                        result = NewRound(rnd);
+                    }
+
+                    input = ResultFeedback(result, player, wonCredits);
+
+                    if (input.ToLower() == "n")
+                    {
+                        EndSession(wonCredits, lostCredits);
+                        isPlaying = false;
+                    }
                 }
 
-                input = ResultChecker(result, canExtraPick, player, wonCredits);
-
-                if (input.ToLower() == "n")
-                {
-                    EndSession(wonCredits, lostCredits);
-                    canPlay = false;
-                }
+                input = "";
             }
         }
 
-        string ResultChecker(int result, bool canExtraPick, Player player, int winAmount)
+        private int PlayRound(Player player, int lostCredits, Random rnd)
         {
-            
+            player.SubtractCredits(_costOfNewRound);
+            lostCredits += _costOfNewRound;
+            Console.WriteLine("You pick a new ball. Let's see the result...");
+            return NewRound(rnd);
+        }
+
+        private string ResultFeedback(int result, Player player, int winAmount)
+        {  
             switch (result)
             {
                 case 1:
                     Console.WriteLine("You Won the round!");
                     player.AddCredits(_creditsOnWin);
-                    winAmount += _costOfNewRound;
+                    winAmount += _creditsOnWin;
                     break;
                 case 2:
                     Console.WriteLine("Too bad. you Lost the round! But dont give up yet");
                     break;
-                case 3:
-                    Console.WriteLine("Congrats!! You got got an Extra Pick!");
-                    canExtraPick = true;
-                    return "Y";
             }
 
             Console.Write("Would you like to play again? Y/N: ");
@@ -81,14 +81,14 @@ namespace Game
             Console.WriteLine($"Total credits lost: {totalLostCredits}");
             Console.WriteLine($"Net amount lost/won {totalWonCredits-totalLostCredits}");
             Console.WriteLine("");
-            Console.WriteLine($"RTP Value: {(totalWonCredits / totalLostCredits) * 100} %");
+
+            var RTP = Math.Round(((double)totalWonCredits / totalLostCredits) * 100,2);
+
+            Console.WriteLine($"RTP Value: {RTP}");
         }
 
-        //EndRound();
-
-        private int NewRound()
+        private int NewRound(Random rnd)
         {
-            var rnd = new Random();
             var ball = PickBall(rnd);
 
             switch (ball.Type)
