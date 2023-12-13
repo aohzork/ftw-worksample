@@ -34,7 +34,7 @@ namespace Game
         public void SubtractCredits(int credits)
         {
             _credits -= credits;
-            Console.WriteLine($"+{credits} Credits subtracted , current credits: {_credits} ");
+            Console.WriteLine($"-{credits} Credits subtracted , current credits: {_credits} ");
         }
 
         public int GetBalance()
